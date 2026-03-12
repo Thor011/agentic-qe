@@ -26,7 +26,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Add upstream remote
-        run: git remote | grep -q upstream || git remote add upstream https://github.com/ruvnet/agentic-qe.git
+        run: git remote | grep -q upstream || git remote add upstream https://github.com/proffesor-for-testing/agentic-qe.git
 
       - name: Fetch upstream
         run: git fetch upstream
