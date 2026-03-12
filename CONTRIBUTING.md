@@ -8,6 +8,7 @@ This document provides guidelines for contributing to the project. Following the
 
 - [Code of Conduct](#code-of-conduct)
 - [How Can I Contribute?](#how-can-i-contribute)
+- [Keeping Your Fork Updated](#keeping-your-fork-updated)
 - [Development Setup](#development-setup)
 - [Coding Standards](#coding-standards)
 - [Commit Message Convention](#commit-message-convention)
@@ -122,6 +123,78 @@ Documentation is crucial! You can contribute by:
 - Writing tutorials or guides
 - Improving API documentation
 - Translating documentation (future)
+
+## Keeping Your Fork Updated
+
+If you forked this repository and want to sync it with the latest changes from the upstream (`proffesor-for-testing/agentic-qe`), follow the steps below.
+
+### 1. Add the Upstream Remote (one-time setup)
+
+After cloning your fork, add the original repository as a remote called `upstream`:
+
+```bash
+git remote add upstream https://github.com/proffesor-for-testing/agentic-qe.git
+
+# Verify that both remotes are configured correctly
+git remote -v
+# origin    https://github.com/<your-username>/agentic-qe.git (fetch)
+# origin    https://github.com/<your-username>/agentic-qe.git (push)
+# upstream  https://github.com/proffesor-for-testing/agentic-qe.git (fetch)
+# upstream  https://github.com/proffesor-for-testing/agentic-qe.git (push)
+```
+
+### 2. Fetch the Latest Upstream Changes
+
+```bash
+git fetch upstream
+```
+
+This downloads all branches and commits from the upstream repository without modifying your local branches.
+
+### 3. Sync Your Local `main` Branch
+
+```bash
+# Switch to your local main branch
+git checkout main
+
+# Merge upstream changes into your local main
+git merge upstream/main
+```
+
+If you prefer a linear history you can rebase instead:
+
+```bash
+git rebase upstream/main
+```
+
+### 4. Push the Updates to Your Fork on GitHub
+
+```bash
+git push origin main
+```
+
+### 5. Update a Feature Branch (optional)
+
+If you have an open feature branch and want to bring in the latest `main` changes:
+
+```bash
+git checkout feat/your-feature
+git rebase main
+# or: git merge main
+```
+
+### Keeping Up to Date Regularly
+
+It is good practice to sync your fork before starting any new work:
+
+```bash
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+```
+
+> **Tip:** GitHub also provides a **"Sync fork"** button directly in the repository UI that can pull upstream changes with a single click.
 
 ## Development Setup
 
