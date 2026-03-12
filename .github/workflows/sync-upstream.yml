@@ -1,0 +1,54 @@
+name: Sync Fork from Upstream
+
+on:
+  schedule:
+    # Runs daily at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to sync (defaults to main)'
+        required: false
+        default: 'main'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Sync with upstream
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.branch || 'main' }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/proffesor-for-testing/agentic-qe.git
+          git remote -v
+
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      - name: Merge upstream into fork branch
+        run: |
+          BRANCH="${{ github.event.inputs.branch || 'main' }}"
+          git merge upstream/${BRANCH} --no-edit || {
+            echo "::error::Merge conflict detected. Please resolve manually."
+            exit 1
+          }
+
+      - name: Push changes
+        run: |
+          BRANCH="${{ github.event.inputs.branch || 'main' }}"
+          git push origin ${BRANCH}
